@@ -1,8 +1,8 @@
-import axios from 'axios'
 import { LineChart, PieChart, BarChart } from 'react-native-chart-kit'
 import { Dimensions, Text } from 'react-native'
 import { useEffect, useState } from 'react'
 import tw from 'twrnc'
+import client from '../client'
 
 const chartConfig = {
   backgroundGradientFrom: '#1E2923',
@@ -36,7 +36,7 @@ export default function Chart({ index }) {
           topic = 'spicyness'
           break
       }
-      const response = await axios.get(`http://localhost:8888/ratio/${topic}`)
+      const response = await client.get(`/ratio/${topic}`)
       if (index === 1) {
         const labels = response.data.map((data) => data.type)
         const data = response.data.map((data) => data.percent)
