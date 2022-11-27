@@ -30,7 +30,12 @@ export default function Home() {
       const body = {
         faculty_id: areaId,
         type: foodType,
-        is_spicy: spicyness === 'spicy' ? true : false,
+        is_spicy:
+          foodType === 'noodle' || foodType === 'rice'
+            ? false
+            : spicyness === 'spicy'
+            ? true
+            : false,
         price: maxPrice,
       }
       console.log(body)

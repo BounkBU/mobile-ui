@@ -4,12 +4,12 @@ import {
   Text,
   View,
   Image,
-  Slider,
   TouchableOpacity,
 } from 'react-native'
 import tw from 'twrnc'
 import { CardList, Navbar, Select } from '../components'
 import { RadioButton } from 'react-native-paper'
+import Slider from '@react-native-community/slider'
 
 export default function Form({
   areaId,
@@ -54,18 +54,21 @@ export default function Form({
               isFoodType
             />
           </View>
-          <View style={tw`flex-col my-2`}>
-            <Text style={tw`text-lg mb-2`}>Spicyness:</Text>
-            <View style={tw`flex-col`}>
-              <RadioButton.Group
-                onValueChange={(value) => setSpicyness(value)}
-                value={spicyness}
-              >
-                <RadioButton.Item label='Spicy' value='spicy' />
-                <RadioButton.Item label='Not Spicy' value='no-spicy' />
-              </RadioButton.Group>
+          {(!foodType || foodType === 'noodles' || foodType === 'rice') && (
+            <View style={tw`flex-col my-2`}>
+              <Text style={tw`text-lg mb-2`}>Spicyness:</Text>
+              <View style={tw`flex-col`}>
+                <RadioButton.Group
+                  onValueChange={(value) => setSpicyness(value)}
+                  value={spicyness}
+                >
+                  <RadioButton.Item label='Spicy' value='spicy' />
+                  <RadioButton.Item label='Not Spicy' value='no-spicy' />
+                </RadioButton.Group>
+              </View>
             </View>
-          </View>
+          )}
+
           <View style={tw`flex-col my-2`}>
             <Text style={tw`text-lg mb-2`}>Max Price: {maxPrice}฿</Text>
             <Slider
