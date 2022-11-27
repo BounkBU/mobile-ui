@@ -22,7 +22,7 @@
     "react-native-paper": "^4.12.5",
     "react-native-select-dropdown": "^3.0.3",
     "react-native-simple-radio-button": "^2.7.4",
-    "react-native-svg": "^13.6.0",
+    "react-native-svg": "13.4.0",
     "react-redux": "^8.0.5",
     "react-router-native": "^6.4.3",
     "twrnc": "^3.4.1"
