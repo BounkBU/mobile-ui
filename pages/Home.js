@@ -11,6 +11,8 @@ import tw from 'twrnc'
 import { CardList, Navbar, Select } from '../components'
 import { useState } from 'react'
 import { RadioButton } from 'react-native-paper'
+import { useAppDispatch } from '../app/hooks'
+import { fetchSubmitForm } from '../featues/app/appSlice'
 
 export default function Home() {
   const areaOptions = ['Engineering', 'Science']
@@ -19,6 +21,7 @@ export default function Home() {
   const [foodType, setFoodType] = useState()
   const [spicyness, setSpicyness] = useState('spicy')
   const [maxPrice, setMaxPrice] = useState(0)
+  const dispatch = useAppDispatch()
 
   const mock = [
     {
@@ -41,10 +44,14 @@ export default function Home() {
 
   async function onSubmitHandler() {
     if (!areaId || !foodType) return
-    console.log(areaId)
-    console.log(foodType)
-    console.log(spicyness)
-    console.log(maxPrice)
+    const body = {
+      facultyID: areaId,
+      type: foodType,
+      is_spicy: spicyness === 'spicy' ? true : false,
+      price: maxPrice,
+    }
+    const response = dispatch(fetchSubmitForm(body))
+    console.log(response)
   }
 
   return (
@@ -63,7 +70,11 @@ export default function Home() {
           </View>
           <View style={tw`flex-col my-2`}>
             <Text style={tw`text-lg mb-2`}>Food Type:</Text>
-            <Select options={foodTypeOptions} setAction={setFoodType} />
+            <Select
+              options={foodTypeOptions}
+              setAction={setFoodType}
+              isFoodType
+            />
           </View>
           <View style={tw`flex-col my-2`}>
             <Text style={tw`text-lg mb-2`}>Spicyness:</Text>

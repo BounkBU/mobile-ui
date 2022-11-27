@@ -2,12 +2,12 @@ import { StyleSheet } from 'react-native'
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-export default function Select({ options, setAction }) {
+export default function Select({ options, setAction, isFoodType }) {
   return (
     <SelectDropdown
       data={options}
-      onSelect={(_, index) => {
-        setAction(index + 1)
+      onSelect={(selectedValue, index) => {
+        setAction(isFoodType ? selectedValue.toLowerCase() : index + 1)
       }}
       defaultButtonText={'Select data'}
       buttonStyle={styles.dropdown1BtnStyle}
