@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { SafeAreaView, View, Text, ScrollView, StyleSheet } from 'react-native'
 import SelectDropdown from 'react-native-select-dropdown'
 import { Chart, Navbar } from '../components'
