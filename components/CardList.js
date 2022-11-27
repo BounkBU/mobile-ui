@@ -1,11 +1,34 @@
-import { ScrollView } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import Card from './Card'
+import tw from 'twrnc'
 
-export default function CardList({ list }) {
+export default function CardList({
+  list,
+  isNearest,
+  selectedRestaurant,
+  setSelectedRestaurant,
+  isFromMenu,
+  setIsFromMenu,
+}) {
   return (
     <ScrollView horizontal>
       {list.map((item, index) => (
-        <Card item={item} key={index} />
+        <View key={index} style={tw`flex-col items-center`}>
+          <Card
+            item={item}
+            selectedRestaurant={selectedRestaurant}
+            setSelectedRestaurant={setSelectedRestaurant}
+            isFromMenu={isFromMenu}
+            setIsFromMenu={setIsFromMenu}
+          />
+          {isNearest && (
+            <Text style={tw`text-blue-500 mt-2`}>
+              {item.distance < 0.5
+                ? 'less than 500m'
+                : `${parseFloat(item.distance).toFixed(2)}m`}
+            </Text>
+          )}
+        </View>
       ))}
     </ScrollView>
   )

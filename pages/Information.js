@@ -1,52 +1,97 @@
-import { View, Image, Text, SafeAreaView, ScrollView } from 'react-native'
+import {
+  View,
+  Image,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native'
 import { CardList } from '../components'
 import tw from 'twrnc'
+import { useState } from 'react'
+import client from '../client'
 
-export default function Information() {
-  const mock = [
-    {
-      id: 1,
-      name: 'Test 1',
-    },
-    {
-      id: 2,
-      name: 'Test 2',
-    },
-    {
-      id: 3,
-      name: 'Test 3',
-    },
-    {
-      id: 4,
-      name: 'Test 4',
-    },
-  ]
+export default function Information({
+  recommendedMenu,
+  nearestRestaurants,
+  setIsSubmittedForm,
+}) {
+  const [selectedRestaurant, setSelectedRestaurant] = useState()
+  const [isFromMenu, setIsFromMenu] = useState(false)
+
+  async function onSubmitHandler() {
+    if (!selectedRestaurant) return
+    client
+      .post(`/restaurants/popularity/${selectedRestaurant}`, JSON.stringify({}))
+      .then((_) => {
+        setIsSubmittedForm(false)
+      })
+  }
+
+  function onClickHandler() {
+    setIsFromMenu(true)
+    setSelectedRestaurant(recommendedMenu.restaurant.id)
+  }
 
   return (
     <SafeAreaView style={tw`h-full relative mx-3`}>
       <ScrollView>
         <View style={tw`w-32 h-32 mx-auto`}>
           <Image
-            style={tw`w-full h-full object-cover`}
+            style={tw`w-full h-full self-center`}
+            resizeMode={'cover'}
             source={require('../assets/kurester.png')}
           />
         </View>
-        <View style={tw`flex-col items-center`}>
-          <Text style={tw`text-xl font-bold mb-4`}>Recommended Menu</Text>
-          <View style={tw`bg-red-500 w-full max-h-60`}>
-            <Image
-              source={require('../assets/adaptive-icon.png')}
-              style={tw`w-full h-full object-contain`}
+        {recommendedMenu && (
+          <View style={tw`flex-col items-center`}>
+            <Text style={tw`text-xl font-bold mb-4`}>Recommended Menu</Text>
+            <TouchableOpacity
+              style={tw`w-full max-h-60 rounded-lg ${
+                isFromMenu &&
+                selectedRestaurant === recommendedMenu.restaurant.id
+                  ? 'border-2 border-blue-700'
+                  : 'border-2'
+              }`}
+              onPress={onClickHandler}
+            >
+              <Image
+                source={{
+                  uri: recommendedMenu.picture_url,
+                }}
+                style={tw`w-full h-full self-center rounded-md`}
+                resizeMode={'cover'}
+              />
+            </TouchableOpacity>
+            <Text style={tw`mt-4`}>Name: {recommendedMenu.name}</Text>
+            <Text>From: {recommendedMenu.restaurant.name}</Text>
+          </View>
+        )}
+        {nearestRestaurants && (
+          <View style={tw`flex-col mt-8`}>
+            <Text style={tw`font-semibold text-xl mb-3`}>
+              Nearest Restaurants
+            </Text>
+            <CardList
+              list={nearestRestaurants}
+              isNearest
+              selectedRestaurant={selectedRestaurant}
+              setSelectedRestaurant={setSelectedRestaurant}
+              isFromMenu={isFromMenu}
+              setIsFromMenu={setIsFromMenu}
             />
           </View>
-          <Text style={tw`mt-4`}>Name: Curry Rice</Text>
-          <Text>From: Tokidoki Kaset-Phaholyothin</Text>
-        </View>
+        )}
         <View style={tw`flex-col mt-8`}>
-          <Text style={tw`font-semibold text-xl mb-3`}>
-            Nearest Restaurants
+          <Text style={tw`font-semibold text-xs text-orange-500 mb-3`}>
+            ** Please considered choose your favourite restuarant and submit
           </Text>
-          <CardList list={mock} />
+          <TouchableOpacity
+            style={tw` bg-blue-600 py-4 px-6 rounded flex-row justify-center`}
+            onPress={onSubmitHandler}
+          >
+            <Text style={tw`text-white font-semibold`}>SUBMIT</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
