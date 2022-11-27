@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { RadioButton } from 'react-native-paper'
 import { useAppDispatch } from '../app/hooks'
 import { fetchSubmitForm } from '../featues/app/appSlice'
+import { useNavigate } from 'react-router-native'
 
 export default function Home() {
   const areaOptions = ['Engineering', 'Science']
@@ -22,6 +23,7 @@ export default function Home() {
   const [spicyness, setSpicyness] = useState('spicy')
   const [maxPrice, setMaxPrice] = useState(0)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const mock = [
     {
@@ -52,6 +54,7 @@ export default function Home() {
     }
     const response = dispatch(fetchSubmitForm(body))
     console.log(response)
+    navigate('/info')
   }
 
   return (
