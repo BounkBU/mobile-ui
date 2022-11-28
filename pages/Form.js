@@ -10,8 +10,11 @@ import tw from 'twrnc'
 import { CardList, Navbar, Select } from '../components'
 import { RadioButton } from 'react-native-paper'
 import Slider from '@react-native-community/slider'
+import { capitalizeString } from '../utils/capitalizeString'
 
 export default function Form({
+  areaOptions,
+  foodTypeOptions,
   areaId,
   foodType,
   spicyness,
@@ -23,8 +26,12 @@ export default function Form({
   setIsSubmittedForm,
   popularRestaurants,
 }) {
-  const areaOptions = ['Engineering', 'Science']
-  const foodTypeOptions = ['Noodles', 'Rice', 'Drink']
+  const facultyOptions = []
+  areaOptions.forEach((data) =>
+    facultyOptions.push(`Faculty of ${capitalizeString(data)}`),
+  )
+  const typeOptions = []
+  foodTypeOptions.forEach((data) => typeOptions.push(capitalizeString(data)))
 
   function onSubmitHandler() {
     if (!areaId || !foodType) return
@@ -44,17 +51,13 @@ export default function Form({
         <View style={tw`flex-col mt-2`}>
           <View style={tw`flex-col my-2`}>
             <Text style={tw`text-lg mb-2`}>Your Area:</Text>
-            <Select options={areaOptions} setAction={setAreaId} />
+            <Select options={facultyOptions} setAction={setAreaId} />
           </View>
           <View style={tw`flex-col my-2`}>
             <Text style={tw`text-lg mb-2`}>Food Type:</Text>
-            <Select
-              options={foodTypeOptions}
-              setAction={setFoodType}
-              isFoodType
-            />
+            <Select options={typeOptions} setAction={setFoodType} isFoodType />
           </View>
-          {(!foodType || foodType === 'noodles' || foodType === 'rice') && (
+          {foodType === 'drink' || foodType === 'buffet' ? null : (
             <View style={tw`flex-col my-2`}>
               <Text style={tw`text-lg mb-2`}>Spicyness:</Text>
               <View style={tw`flex-col`}>
@@ -75,7 +78,7 @@ export default function Form({
               value={maxPrice}
               onValueChange={(value) => setMaxPrice(value)}
               step={10}
-              maximumValue={500}
+              maximumValue={1000}
             />
           </View>
           <View style={tw`flex-row justify-end`}>

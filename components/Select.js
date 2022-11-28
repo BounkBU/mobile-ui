@@ -6,8 +6,14 @@ export default function Select({ options, setAction, isFoodType }) {
   return (
     <SelectDropdown
       data={options}
-      onSelect={(selectedValue, index) => {
-        setAction(isFoodType ? selectedValue.toLowerCase() : index + 1)
+      onSelect={(selectedValue) => {
+        setAction(
+          !isFoodType
+            ? selectedValue.toLowerCase().split(' ')[
+                selectedValue.split(' ').length - 1
+              ]
+            : selectedValue.toLowerCase(),
+        )
       }}
       defaultButtonText={'Select data'}
       buttonStyle={styles.dropdown1BtnStyle}

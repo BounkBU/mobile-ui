@@ -23,7 +23,7 @@ export default function Information({
     if (!selectedRestaurant) return
     client
       .post(`/restaurants/popularity/${selectedRestaurant}`, JSON.stringify({}))
-      .then((_) => {
+      .then((response) => {
         setIsSubmittedForm(false)
       })
   }
@@ -63,7 +63,8 @@ export default function Information({
                 resizeMode={'cover'}
               />
             </TouchableOpacity>
-            <Text style={tw`mt-4`}>Name: {recommendedMenu.name}</Text>
+            <Text style={tw`mt-4`}>Menu: {recommendedMenu.name}</Text>
+            <Text>Price: {recommendedMenu.price}฿</Text>
             <Text>From: {recommendedMenu.restaurant.name}</Text>
           </View>
         )}

@@ -25,7 +25,7 @@ export default function CardList({
             <Text style={tw`text-blue-500 mt-2`}>
               {item.distance < 0.5
                 ? 'less than 500m'
-                : `${parseFloat(item.distance).toFixed(2)}m`}
+                : `${parseFloat(item.distance).toFixed(2)}km`}
             </Text>
           )}
         </View>
