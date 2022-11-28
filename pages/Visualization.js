@@ -6,7 +6,13 @@ import tw from 'twrnc'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 export default function Visualization() {
-  const options = ['Food type', 'Price', 'Spicy']
+  const options = [
+    'Popularity from average menu price',
+    'Average Popularity from menu price range',
+    'Food type',
+    'Price',
+    'Spicy',
+  ]
   const [selectedData, setSelectedData] = useState()
 
   return (
@@ -50,7 +56,7 @@ export default function Visualization() {
 
 const styles = StyleSheet.create({
   dropdown1BtnStyle: {
-    width: '80%',
+    width: '100%',
     height: 50,
     backgroundColor: '#FFF',
     borderRadius: 8,

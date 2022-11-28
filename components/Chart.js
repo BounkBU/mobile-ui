@@ -20,6 +20,8 @@ export default function Chart({ index }) {
   const [render1, setRender1] = useState()
   const [render2, setRender2] = useState()
   const [render3, setRender3] = useState()
+  const [render4, setRender4] = useState()
+  const [render5, setRender5] = useState()
 
   useEffect(() => {
     async function onFetch() {
@@ -27,19 +29,27 @@ export default function Chart({ index }) {
       let topic
       switch (index) {
         case 1:
-          topic = 'type'
+          topic = 'popularity'
           break
         case 2:
-          topic = 'price'
+          topic = 'popularity/average'
           break
         case 3:
+          topic = 'type'
+          break
+        case 4:
+          topic = 'price'
+          break
+        case 5:
           topic = 'spicyness'
           break
       }
       const response = await client.get(`/ratio/${topic}`)
       if (index === 1) {
-        const labels = response.data.map((data) => data.type)
-        const data = response.data.map((data) => data.percent)
+        const labels = response.data.map((data) =>
+          data.average_price.toFixed(2),
+        )
+        const data = response.data.map((data) => data.popularity)
         setRender1({
           labels: labels,
           datasets: [
@@ -52,7 +62,7 @@ export default function Chart({ index }) {
       if (index === 2) {
         const labels = []
         const data = []
-        for (const [key, value] of Object.entries(response.data.results)) {
+        for (const [key, value] of Object.entries(response.data)) {
           labels.push(key)
           data.push(value)
         }
@@ -66,7 +76,35 @@ export default function Chart({ index }) {
         })
       }
       if (index === 3) {
-        setRender3([
+        const labels = response.data.map((data) => data.type)
+        const data = response.data.map((data) => data.percent)
+        setRender3({
+          labels: labels,
+          datasets: [
+            {
+              data: data,
+            },
+          ],
+        })
+      }
+      if (index === 4) {
+        const labels = []
+        const data = []
+        for (const [key, value] of Object.entries(response.data)) {
+          labels.push(key)
+          data.push(value)
+        }
+        setRender4({
+          labels: labels,
+          datasets: [
+            {
+              data: data,
+            },
+          ],
+        })
+      }
+      if (index === 5) {
+        setRender5([
           {
             name: response.data[0].name,
             population: response.data[0].percent,
@@ -94,8 +132,9 @@ export default function Chart({ index }) {
       <LineChart
         data={render1}
         width={screenWidth}
-        height={220}
+        height={250}
         chartConfig={chartConfig}
+        withInnerLines={false}
       />
     )
   }
@@ -104,13 +143,12 @@ export default function Chart({ index }) {
     if (!render2) return
 
     return (
-      <BarChart
+      <LineChart
         data={render2}
         width={screenWidth}
-        height={220}
-        xAxisLabel=' ฿'
+        height={250}
         chartConfig={chartConfig}
-        verticalLabelRotation={0}
+        withInnerLines={false}
       />
     )
   }
@@ -119,8 +157,35 @@ export default function Chart({ index }) {
     if (!render3) return
 
     return (
-      <PieChart
+      <LineChart
         data={render3}
+        width={screenWidth}
+        height={250}
+        chartConfig={chartConfig}
+      />
+    )
+  }
+
+  if (index === 4) {
+    if (!render4) return
+
+    return (
+      <BarChart
+        data={render4}
+        width={screenWidth}
+        height={220}
+        chartConfig={chartConfig}
+        verticalLabelRotation={0}
+      />
+    )
+  }
+
+  if (index === 5) {
+    if (!render5) return
+
+    return (
+      <PieChart
+        data={render5}
         width={screenWidth}
         height={250}
         chartConfig={chartConfig}
