@@ -69,11 +69,17 @@ export default function Home() {
       console.log(response)
       setRecommendMenu(response.data.recommended_menu)
       setNearestRestaurants(response.data.nearest_restaurants)
-      setSpicyness('spicy')
-      setMaxPrice(0)
+      setInitialState()
     }
     onFetchSubmitForm()
   }, [isSubmittedForm])
+
+  function setInitialState() {
+    setAreaId()
+    setFoodType()
+    setSpicyness('spicy')
+    setMaxPrice(0)
+  }
 
   if (!isSubmittedForm) {
     if (!areaOptions || !foodTypeOptions) return null
