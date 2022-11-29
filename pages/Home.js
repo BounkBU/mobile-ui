@@ -13,7 +13,9 @@ export default function Home() {
   const [areaId, setAreaId] = useState()
   const [foodType, setFoodType] = useState()
   const [spicyness, setSpicyness] = useState('spicy')
-  const [maxPrice, setMaxPrice] = useState(0)
+  const [minPrice, setMinPrice] = useState(0)
+  const [maxPrice, setMaxPrice] = useState(minPrice)
+  const [minPriceOfType, setMinPriceOfType] = useState()
 
   const [popularRestaurants, setPopularRestaurants] = useState()
   const [recommendedMenu, setRecommendMenu] = useState()
@@ -41,12 +43,26 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    async function onFetchPopularRestaurants() {
+    async function onFetchFoodType() {
       const response = await client.get('/menus/type')
       setFoodTypeOptions(response.data.map((data) => data.type))
     }
-    onFetchPopularRestaurants()
+    onFetchFoodType()
   }, [])
+
+  useEffect(() => {
+    async function onFetchMinPrice() {
+      const response = await client.get('/menus/type/min-price')
+      setMinPriceOfType(response.data)
+    }
+    onFetchMinPrice()
+  }, [])
+
+  useEffect(() => {
+    if (!minPriceOfType || !foodType) return
+    setMinPrice(minPriceOfType[foodType])
+    setMaxPrice(minPriceOfType[foodType])
+  }, [foodType])
 
   useEffect(() => {
     async function onFetchSubmitForm() {
@@ -68,7 +84,7 @@ export default function Home() {
       const response = await client.post('/form', body)
       console.log(response)
       setRecommendMenu(response.data.recommended_menu)
-      setNearestRestaurants(response.data.nearest_restaurants)
+      setNearestRestaurants(response.data.nearest_restaurant)
       setInitialState()
     }
     onFetchSubmitForm()
@@ -91,6 +107,7 @@ export default function Home() {
         areaId={areaId}
         foodType={foodType}
         spicyness={spicyness}
+        minPrice={minPrice}
         maxPrice={maxPrice}
         setAreaId={setAreaId}
         setFoodType={setFoodType}

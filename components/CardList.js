@@ -24,7 +24,7 @@ export default function CardList({
           {isNearest && (
             <Text style={tw`text-blue-500 mt-2`}>
               {item.distance < 0.5
-                ? 'less than 500m'
+                ? `${(item.distance * 1000).toFixed(2)}m`
                 : `${parseFloat(item.distance).toFixed(2)}km`}
             </Text>
           )}

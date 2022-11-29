@@ -18,6 +18,7 @@ export default function Form({
   areaId,
   foodType,
   spicyness,
+  minPrice,
   maxPrice,
   setAreaId,
   setFoodType,
@@ -78,6 +79,7 @@ export default function Form({
               value={maxPrice}
               onValueChange={(value) => setMaxPrice(value)}
               step={10}
+              minimumValue={minPrice}
               maximumValue={1000}
             />
           </View>

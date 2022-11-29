@@ -62,7 +62,7 @@ export default function Chart({ index }) {
       if (index === 2) {
         const labels = []
         const data = []
-        for (const [key, value] of Object.entries(response.data)) {
+        for (const [key, value] of Object.entries(response.data.results)) {
           labels.push(key)
           data.push(value)
         }
@@ -90,7 +90,7 @@ export default function Chart({ index }) {
       if (index === 4) {
         const labels = []
         const data = []
-        for (const [key, value] of Object.entries(response.data)) {
+        for (const [key, value] of Object.entries(response.data.results)) {
           labels.push(key)
           data.push(value)
         }
